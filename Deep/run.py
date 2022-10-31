@@ -9,7 +9,7 @@ import os
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--n_prompt_tokens", default=50, type=int)
+parser.add_argument("--n_prompt_tokens", default=10, type=int)
 parser.add_argument("--intrinsic_dim", default=300, type=int)
 parser.add_argument("--save_every", default=10000, type=int)
 parser.add_argument("--batch_size", default=4, type=int)
@@ -29,6 +29,7 @@ parser.add_argument("--step_size2", default=10000, type=int)
 parser.add_argument("--gamma1", default=.1, type=float)
 parser.add_argument("--gamma2", default=.1, type=float)
 parser.add_argument("--accumulation_step", default=1, type=int)
+parser.add_argument("--model_path", default="bert-base-cased", type=str)
 args = parser.parse_args()
 
 
@@ -82,7 +83,7 @@ if not os.path.exists(save_path):
 args.save_path = save_path
 torch.manual_seed(args.seed)
 
-model = PretrainPrompt(args.intrinsic_dim, args.n_prompt_tokens, num_datasets, args.n_prompts, args.init_temperature)
+model = PretrainPrompt(args.intrinsic_dim, args.n_prompt_tokens, num_datasets, args.n_prompts, args.init_temperature, model_path=args.model_path)
 
 optimizer = Optim(
     [model.model.model.encoder.encoder.router],

@@ -17,9 +17,10 @@ import datasets
 # Taks2Prompt = torch.rand(Task_num,prompt_token_num)
 
 class PretrainPrompt(nn.Module):
-    def __init__(self, d, prompt_token_num, n_tasks, n_prompts, init_temperature):
+    def __init__(self, d, prompt_token_num, 
+                    n_tasks, n_prompts, init_temperature, 
+                    model_path = "bert-base-cased"):
         super(PretrainPrompt, self).__init__()
-        model_path = "bert-base-cased"
         self.tokenizer = BertTokenizerFast.from_pretrained(model_path)
         self.metric = datasets.load_metric("squad")
         prefix_config = {
