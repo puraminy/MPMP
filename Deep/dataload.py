@@ -81,8 +81,9 @@ class InfiniteDataset(torch.utils.data.Dataset):
 
 class BasicDataset:
     offset = 1000
-    tokenizer = BertTokenizerFast.from_pretrained("/home/ahmad/pret/bert")
-    data_dir = '/home/ahmad/MPMP/data'
+    model_path = "bert-base-cased"
+    tokenizer = BertTokenizerFast.from_pretrained(model_path)
+    data_dir = '../data'
 
     def __init__(self, path, has_test=False, n_prompt_tokens=50):
         self.path = path

@@ -19,7 +19,8 @@ import datasets
 class PretrainPrompt(nn.Module):
     def __init__(self, d, prompt_token_num, n_tasks, n_prompts, init_temperature):
         super(PretrainPrompt, self).__init__()
-        self.tokenizer = BertTokenizerFast.from_pretrained("/home/ahmad/pret/bert")
+        model_path = "bert-base-cased"
+        self.tokenizer = BertTokenizerFast.from_pretrained(model_path)
         self.metric = datasets.load_metric("squad")
         prefix_config = {
             'intrinsic_dim': d,
@@ -28,7 +29,7 @@ class PretrainPrompt(nn.Module):
             'n_prompts': n_prompts,
             'temperature': init_temperature,
         }
-        self.model = CPTForQuestionAnswering.from_pretrained("/home/ahmad/pret/bert", prefix_config=prefix_config)
+        self.model = CPTForQuestionAnswering.from_pretrained(model_path, prefix_config=prefix_config)
 
     def forward(self, input_ids, start_positions, end_positions, task_id=0, label_mask=None, label=None, is_train=True):
         batch_size = input_ids.size(0)
