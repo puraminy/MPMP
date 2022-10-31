@@ -119,7 +119,7 @@ class NewDataset(datasets.GeneratorBasedBuilder):
         # It can accept any type or nested list/dict and will give back the same structure with the url replaced with path to local files.
         # By default the archives will be extracted and a path to a cached folder where they are extracted is returned instead of the archive
         #urls = _URLS[self.config.name]
-        data_dir = "/home/ahmad/MPMP/data/ATOMIC/" #dl_manager.download_and_extract(urls)
+        data_dir = "/content/MPMP/data/ATOMIC/" #dl_manager.download_and_extract(urls)
         return [
             datasets.SplitGenerator(
                 name=datasets.Split.TRAIN,
