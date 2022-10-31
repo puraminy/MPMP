@@ -98,6 +98,9 @@ if args.step_size1 is not None and args.step_size2 is not None and args.gamma1 i
     scheduler = Scheduler(optimizer, args.step_size1, args.step_size2, args.gamma1, args.gamma2)
 else:
     scheduler = None
-# trainer = MutitaskTrainer(args, model, optimizer, scheduler)
-trainer = MutitaskTrainer.from_checkpoint(args, model, Optim, 700000)
+
+
+
+trainer = MutitaskTrainer(args, model, optimizer, scheduler)
+#trainer = MutitaskTrainer.from_checkpoint(args, model, Optim, 700000)
 trainer.train()

@@ -92,7 +92,7 @@ torch.manual_seed(args.seed)
 
 model = PretrainPrompt(args.intrinsic_dim, args.n_prompt_tokens, 1, args.n_prompts, args.init_temperature)
 # model.prompt_embed_model.load_state_dict(torch.load('/remote-home/zfhe/projects/BBT-prompt_pretrain/results/PromptTokens50_IntrinsicDim500_BatchSize8_NPrompts4_LrRouter0.005_LrPrompt0.001/models/399999.th'))
-state = torch.load('/home/ma-user/work/zfhe/MPMP/BBTv2/results/PromptTokens50_BatchSize32_NPrompts8_LrRouter0.0005_LrPrompt0.0001_AnnealParams1.0;None;None/best.th')
+state = torch.load('/home/ahmad/work/zfhe/MPMP/BBTv2/results/PromptTokens50_BatchSize32_NPrompts8_LrRouter0.0005_LrPrompt0.0001_AnnealParams1.0;None;None/best.th')
 model.model.model.encoder.encoder.prompt = torch.nn.Parameter(data=torch.bmm(state['z'], state['A']))
 task_num = -1
 if not task_num < 0:

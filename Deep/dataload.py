@@ -2,6 +2,8 @@ from datasets import load_dataset, concatenate_datasets, DatasetDict
 import torch
 from transformers import BertTokenizerFast
 from torch.nn.utils.rnn import pad_sequence
+import os
+
 
 
 
@@ -79,8 +81,8 @@ class InfiniteDataset(torch.utils.data.Dataset):
 
 class BasicDataset:
     offset = 1000
-    tokenizer = BertTokenizerFast.from_pretrained("fnlp/cpt-large")
-    data_dir = '/remote-home/share/zfhe/MPMP_data'
+    tokenizer = BertTokenizerFast.from_pretrained("/home/ahmad/pret/bert")
+    data_dir = '/home/ahmad/MPMP/data'
 
     def __init__(self, path, has_test=False, n_prompt_tokens=50):
         self.path = path
@@ -136,13 +138,13 @@ class TCNLIBasicDataset(BasicDataset):
     def convert_examples(self, example):
         input_ids = [101] + self.init_prompt + self.tokenizer.encode(self.input_template(example))[1:-1][:self.max_input_len]
         input_ids_len = len(input_ids)
-        start_positions = self.option_starts[int(example['label'])] + input_ids_len
+        start_positions = self.option_starts[int(example['target_text'])] + input_ids_len
         return {
             'input_ids': input_ids + self.option_ids_list,
             'start_positions': start_positions,
-            'end_positions': start_positions + len(self.labellist[int(example['label'])]) - 1,
+            'end_positions': start_positions + len(self.labellist[int(example['target_text'])]) - 1,
             'label_mask': [0] * input_ids_len + self.label_mask + [1],
-            'label': int(example['label'])
+            'label': int(example['target_text'])
         }
 
     def get_dataset(self, split='train', k_shot=32, seed=42):
@@ -214,7 +216,7 @@ class ExtractiveQABasicDataset(BasicDataset):
         return dataset
 
     def convert_examples(self, example):
-        context_ids = self.tokenizer(example['context'])
+        context_ids = self.tokenizer(example['input_text'])
         if self.has_is_impossible and example['is_impossible']:
             start_positions = 9 + self.n_prompt_tokens
             end_positions = start_positions + 3
@@ -232,18 +234,16 @@ class ExtractiveQABasicDataset(BasicDataset):
         }
 
 
-class AFQMCDataset(TCNLIBasicDataset):
+os.environ['HF_DATASETS_OFFLINE']="1"
+class AtomicDataset(MultipleChoiceQABasicDataset):
     def __init__(self, n_prompt_tokens=50):
         super().__init__(
-            path=f'{self.data_dir}/AFQMC/AFQMC.py',
-            labellist=["矛盾", "相似"],
+            path=f'{self.data_dir}/ATOMIC/atomic.py',
             n_prompt_tokens=n_prompt_tokens,
             has_test=False,
-            label_mask=[1, 0, 1, 1, 0]
         )
-
     def input_template(self, example):
-        return f'意思判别："{example["text1"]}"与"{example["text2"]}"的意思是？选项：'
+        return f'intention ："{example["input_text"]}". PersonX wants to "'
 
 
 class OcnliDataset(TCNLIBasicDataset):
@@ -921,7 +921,9 @@ class WeiboSentimentDataset(TCNLIBasicDataset):
 
 
 Dataset_list = [
-    AFQMCDataset,
+    AtomicDataset,
+]
+other = [
     # OcnliDataset,
     PawsDataset,
     CMNLIDataset,
