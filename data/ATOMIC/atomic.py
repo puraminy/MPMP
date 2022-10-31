@@ -125,7 +125,7 @@ class NewDataset(datasets.GeneratorBasedBuilder):
                 name=datasets.Split.TRAIN,
                 # These kwargs will be passed to _generate_examples
                 gen_kwargs={
-                    "filepath": os.path.join(data_dir, "train.tsv"),
+                    "filepath": os.path.join(data_dir, "data.tsv"),
                     "start":0,
                     "end":200,
                     "split": "train",
@@ -135,7 +135,7 @@ class NewDataset(datasets.GeneratorBasedBuilder):
                 name=datasets.Split.VALIDATION,
                 # These kwargs will be passed to _generate_examples
                 gen_kwargs={
-                    "filepath": os.path.join(data_dir, "train.tsv"),
+                    "filepath": os.path.join(data_dir, "data.tsv"),
                     "start":200,
                     "end":250,
                     "split": "dev",
@@ -145,7 +145,7 @@ class NewDataset(datasets.GeneratorBasedBuilder):
                 name=datasets.Split.TEST,
                 # These kwargs will be passed to _generate_examples
                 gen_kwargs={
-                    "filepath": os.path.join(data_dir, "train.tsv"),
+                    "filepath": os.path.join(data_dir, "data.tsv"),
                     "start":250,
                     "end":550,
                     "split": "test"
