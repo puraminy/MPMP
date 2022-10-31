@@ -9,7 +9,6 @@
 .pytest_cache
 glue_data/*
 out/*
-data/*
 venv/*
 output*/*
 wandb/*
