@@ -17,6 +17,7 @@
 
 import csv
 import json
+from pathlib import Path
 import os
 import pandas as pd
 
@@ -119,13 +120,15 @@ class NewDataset(datasets.GeneratorBasedBuilder):
         # It can accept any type or nested list/dict and will give back the same structure with the url replaced with path to local files.
         # By default the archives will be extracted and a path to a cached folder where they are extracted is returned instead of the archive
         #urls = _URLS[self.config.name]
-        data_dir = "/content/MPMP/data/ATOMIC/" #dl_manager.download_and_extract(urls)
+        #pp = Path(__file__).parent.parent.resolve()
+        base_dir = "/home/pouramini"
+        data_dir = os.path.join(base_dir, "MPMP/data/ATOMIC/") 
         return [
             datasets.SplitGenerator(
                 name=datasets.Split.TRAIN,
                 # These kwargs will be passed to _generate_examples
                 gen_kwargs={
-                    "filepath": os.path.join(data_dir, "data.tsv"),
+                    "filepath": os.path.join(data_dir, "train.tsv"),
                     "start":0,
                     "end":200,
                     "split": "train",
@@ -135,7 +138,7 @@ class NewDataset(datasets.GeneratorBasedBuilder):
                 name=datasets.Split.VALIDATION,
                 # These kwargs will be passed to _generate_examples
                 gen_kwargs={
-                    "filepath": os.path.join(data_dir, "data.tsv"),
+                    "filepath": os.path.join(data_dir, "val.tsv"),
                     "start":200,
                     "end":250,
                     "split": "dev",
@@ -145,7 +148,7 @@ class NewDataset(datasets.GeneratorBasedBuilder):
                 name=datasets.Split.TEST,
                 # These kwargs will be passed to _generate_examples
                 gen_kwargs={
-                    "filepath": os.path.join(data_dir, "data.tsv"),
+                    "filepath": os.path.join(data_dir, "test.tsv"),
                     "start":250,
                     "end":550,
                     "split": "test"

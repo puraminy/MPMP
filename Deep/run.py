@@ -83,7 +83,9 @@ if not os.path.exists(save_path):
 args.save_path = save_path
 torch.manual_seed(args.seed)
 
-model = PretrainPrompt(args.intrinsic_dim, args.n_prompt_tokens, num_datasets, args.n_prompts, args.init_temperature, model_path=args.model_path)
+#model_path = args.model_path
+model_path = "/home/pouramini/pret/bert"
+model = PretrainPrompt(args.intrinsic_dim, args.n_prompt_tokens, num_datasets, args.n_prompts, args.init_temperature, model_path=model_path)
 
 optimizer = Optim(
     [model.model.model.encoder.encoder.router],

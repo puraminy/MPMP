@@ -19,7 +19,8 @@ import datasets
 class PretrainPrompt(nn.Module):
     def __init__(self, d, prompt_token_num, 
                     n_tasks, n_prompts, init_temperature, 
-                    model_path = "bert-base-cased"):
+                    #model_path = "bert-base-cased"):
+                    model_path = "/home/pouramini/pret/bert"):
         super(PretrainPrompt, self).__init__()
         self.tokenizer = BertTokenizerFast.from_pretrained(model_path)
         self.metric = datasets.load_metric("squad")
